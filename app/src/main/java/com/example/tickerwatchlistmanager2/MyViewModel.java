@@ -11,6 +11,7 @@ import java.util.LinkedList;
 public class MyViewModel extends ViewModel {
     MutableLiveData<LinkedList<String>> tickers;
     MutableLiveData<String> current;
+    LinkedList<String> history = new LinkedList<>();
 
     public MutableLiveData<String> getCurrent(){
         if(current == null){
@@ -21,7 +22,11 @@ public class MyViewModel extends ViewModel {
     }
 
     public void setCurrent(String newCurrent){
-        current.setValue(newCurrent);
+        if(current == null){
+            current = new MutableLiveData<>();
+            current.setValue(newCurrent);
+        } else {current.setValue(newCurrent);}
+
     }
     public void addTicker(String newTicker){
         LinkedList<String> tickersList = tickers.getValue();
@@ -36,7 +41,23 @@ public class MyViewModel extends ViewModel {
         return tickers;
     }
 
-    private void addDefaults(){
+    public void setTickers(String name){
+        if (tickers == null) {
+            tickers= new MutableLiveData<>();
+            getTickers();
+        }
+        history = tickers.getValue();
+        if (history.size() == 6) {
+            //remove oldest entry
+            history.add(name);
+        } else {
+            history.add(name);
+        }
+    }
+
+
+
+    public void addDefaults(){
         LinkedList<String> tickersList = tickers.getValue();
         tickersList.add("BAC");
         tickersList.add("AAPL");
@@ -45,5 +66,6 @@ public class MyViewModel extends ViewModel {
     }
 
 
-
+    //add ticker method to check size of list and then add to ticjer to list accordingly
+    //and update cirrent ticker mutablelivedata using setTicker
 }

@@ -3,6 +3,7 @@ package com.example.tickerwatchlistmanager2;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,8 @@ import android.webkit.WebViewClient;
 
 public class InfoWebFragment extends Fragment {
 
-    //for tickerlist.selected "keyname"
-        //navigate to seekingalpha/symbol/keyname
-        //as long as list matches keyname should be plug and go
     private WebView webview;
+    MyViewModel viewModel;
 
     public InfoWebFragment() {
         // Required empty public constructor
@@ -25,7 +24,6 @@ public class InfoWebFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
 
@@ -34,7 +32,8 @@ public class InfoWebFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_info_web, container, false);
-        webview = (WebView) view.findViewById(R.id.webView1);
+        viewModel = new ViewModelProvider(requireActivity()).get(MyViewModel.class);
+        webview = view.findViewById(R.id.webView1);
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webview.setWebViewClient(new WebViewClient() {
@@ -45,6 +44,10 @@ public class InfoWebFragment extends Fragment {
             }
         });
         webview.loadUrl("https://seekingalpha.com/");
+
         return view;
     }
+
+
+
 }
